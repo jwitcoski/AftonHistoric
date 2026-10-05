@@ -1,0 +1,63 @@
+{
+  "scene_schema_version": "0.1.0-city",
+  "scene_kind": "historic_city",
+  "scene_id": "afton_historic_minnesota",
+  "display_name": "Afton Historic Map",
+  "location": "Afton, Minnesota, United States",
+  "build_timestamp_utc": "2026-10-05T18:22:33+00:00",
+  "coordinate_system": {
+    "source_crs": "EPSG:4326",
+    "projected_crs": "EPSG:32615",
+    "origin_easting_m": 515409.99638339184,
+    "origin_northing_m": 4971095.322598936,
+    "origin_longitude": -92.80484213168258,
+    "origin_latitude": 44.893113708572784,
+    "units": "meters",
+    "game_axes": {
+      "x": "east_m",
+      "y": "elevation_m",
+      "z": "negative_north_m"
+    },
+    "local_origin": {
+      "easting_m": 515409.99638339184,
+      "northing_m": 4971095.322598936,
+      "longitude": -92.80484213168258,
+      "latitude": 44.893113708572784
+    }
+  },
+  "terrain": {
+    "mesh": "terrain/terrain-mesh.glb",
+    "mesh_metadata": "terrain/terrain-metadata.json",
+    "heightfield": "terrain/heightfield-u16.bin",
+    "heightfield_metadata": "terrain/heightfield-metadata.json",
+    "elevation_min_m": 205.004150390625,
+    "elevation_max_m": 309.98077392578125,
+    "vertex_spacing_m": 10.0,
+    "height_exaggerate": 1
+  },
+  "vectors": {
+    "roads": "vectors/roads.geojson",
+    "buildings": "vectors/buildings.geojson",
+    "water": "vectors/water.geojson",
+    "landuse": "vectors/landuse.geojson",
+    "places": "vectors/places.geojson",
+    "historic_sites": "vectors/historic-sites.geojson"
+  },
+  "camera": {
+    "suggested_hero_span": 100
+  },
+  "data_counts": {
+    "roads": 171,
+    "buildings": 322,
+    "water": 36,
+    "landuse": 153,
+    "places": 21,
+    "historic_sites": 10
+  },
+  "attribution": {
+    "osm": "\u00a9 OpenStreetMap contributors",
+    "dem": "Mapzen Skadi / AWS Terrain Tiles",
+    "license_notes": "OSM data is available under ODbL. Preserve attribution when using or redistributing these assets."
+  },
+  "history_note": "The OSM and DEM layers describe the present-day landscape and are shown only for the Today era. No historic scene data is included yet."
+}

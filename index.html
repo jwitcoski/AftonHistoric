@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#e7ece7" />
+  <title>Afton, Across Time | Afton Historic</title>
+  <script type="module" crossorigin src="/AftonHistoric/assets/index-B_pBQLsr.js"></script>
+  <link rel="stylesheet" crossorigin href="/AftonHistoric/assets/index-C0rhEc60.css">
+</head>
+<body>
+  <div id="afton-map" class="afton-map" aria-label="Three-dimensional terrain and map of Afton, Minnesota">
+    <canvas id="afton-canvas"></canvas>
+    <header class="afton-topbar">
+      <a class="afton-brand" href="#" aria-label="Afton Historic home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span><strong>AFTON</strong><small>HISTORIC ATLAS</small></span>
+      </a>
+      <span class="topbar-location">AFTON, MINNESOTA</span>
+      <button id="afton-layers-toggle" class="icon-button" type="button" aria-label="Toggle map layers" title="Map layers">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg>
+      </button>
+    </header>
+
+    <main class="afton-main">
+      <section class="era-panel" aria-label="Afton history">
+        <div class="eyebrow"><span></span> CITY OF AFTON · ST. CROIX VALLEY</div>
+        <h1 id="afton-title">A river town takes root.</h1>
+        <p id="afton-description">Founding era · 1855</p>
+        <button id="start-tour" class="tour-start" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z" /></svg><span>Take Afton's Old Village tour</span></button>
+        <div class="era-control">
+          <span>EXPLORE AN ERA</span>
+          <div class="era-switcher" role="group" aria-label="Choose an era">
+            <button type="button" data-afton-era="1855" aria-pressed="true">1855</button>
+            <button type="button" data-afton-era="1971" aria-pressed="false">1971</button>
+            <button type="button" data-afton-era="2026" aria-pressed="false">Today</button>
+          </div>
+        </div>
+        <div class="era-footnote">Modern map and elevation data are context only; historical layers await verified source material.</div>
+      </section>
+
+      <section id="afton-layers" class="layers-panel" aria-label="Map layers" hidden>
+        <div class="layers-heading"><span>MAP LAYERS</span><button type="button" id="afton-layers-close" class="mini-close" aria-label="Close map layers">×</button></div>
+        <label><input type="checkbox" data-afton-layer="terrain" checked /><i class="swatch terrain-swatch"></i><span>DEM terrain relief</span></label>
+        <label><input type="checkbox" data-afton-layer="trees" checked /><i class="swatch tree-swatch"></i><span>OSM woodland trees</span></label>
+        <label><input type="checkbox" data-afton-layer="roads" checked /><i class="swatch road-swatch"></i><span>OSM roads</span></label>
+        <label><input type="checkbox" data-afton-layer="cars" checked /><i class="swatch car-swatch"></i><span>Road vehicles</span></label>
+        <label><input type="checkbox" data-afton-layer="buildings" checked /><i class="swatch building-swatch"></i><span>OSM building footprints</span></label>
+        <label><input type="checkbox" data-afton-layer="water" checked /><i class="swatch water-swatch"></i><span>OSM water</span></label>
+        <label><input type="checkbox" data-afton-layer="landuse" checked /><i class="swatch landuse-swatch"></i><span>OSM land use</span></label>
+        <label><input type="checkbox" data-afton-layer="places" checked /><i class="swatch place-swatch"></i><span>OSM places</span></label>
+        <label><input type="checkbox" data-afton-layer="historic_sites" checked /><i class="swatch historic-swatch"></i><span>Historic sites</span></label>
+      </section>
+
+      <aside id="historic-popup" class="historic-popup" aria-live="polite" aria-label="Historic site details" hidden>
+        <button type="button" id="historic-popup-close" class="mini-close popup-close" aria-label="Close historic site">×</button>
+        <div class="popup-topline"><span id="historic-popup-order"></span><span id="historic-popup-designation"></span><span id="tour-step" hidden></span></div>
+        <h2 id="historic-popup-title"></h2>
+        <p id="historic-popup-address"></p>
+        <p id="historic-popup-description"></p>
+        <div class="popup-links"><a id="historic-popup-source" href="#" target="_blank" rel="noreferrer">HistoricPlace record ↗</a><a id="historic-popup-map" href="#" target="_blank" rel="noreferrer">Map location ↗</a></div>
+        <div class="popup-navigation"><button id="historic-popup-prev" type="button" aria-label="Previous tour stop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg><span>Previous</span></button><button id="historic-popup-next" type="button" aria-label="Next tour stop"><span>Next stop</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></button></div>
+      </aside>
+
+      <div class="map-caption"><span class="caption-rule"></span><span id="afton-caption">FOUNDING ERA · HISTORIC LAYERS AWAIT SOURCES</span></div>
+      <div class="map-tools" aria-label="Map controls">
+        <button id="afton-reset" class="icon-button" type="button" aria-label="Reset view" title="Reset view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-3L3 11"/><path d="M3 5v6h6M4 13a8 8 0 0 0 14.7 3L21 13"/><path d="M21 19v-6h-6"/></svg>
+        </button>
+      </div>
+    </main>
+
+    <footer class="afton-statusbar"><span id="afton-status">Loading Afton terrain…</span><span>DRAG TO ROTATE · SCROLL TO ZOOM</span><span>© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a> · Mapzen Skadi DEM</span></footer>
+  </div>
+</body>
+</html>
