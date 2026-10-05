@@ -2,7 +2,7 @@
 
 An interactive historical mapping and storytelling platform for the City of Afton, Minnesota. The experience is designed to let residents and visitors explore the settlement's changing landscape across three eras: its founding in 1855, incorporation in 1971, and Afton today.
 
-The current MVP is a modular Three.js scene with orbit navigation, era switching, an extensible layer registry, and a MapTiler basemap. The basemap is contemporary OSM-derived cartography. Optional local OSM vector overlays are loaded from processed GeoJSON; they are hidden in the 1855 and 1971 views because present-day OSM is not historical evidence. No fabricated roads, parcels, buildings, or sample markers are added to the scene. Historical claims, coordinates, imagery, and audio require review with the City and local historical sources.
+The app presents Afton's terrain and OSM context in an interactive Three.js map, with era controls and a ten-stop Old Village story tour. Current roads, buildings, water, land use, trees, and vehicles are present-day context, not historical evidence. Historic stop descriptions and sources are maintained in `data/historic/sites.json`.
 
 ## Setup
 
@@ -23,6 +23,10 @@ Build and preview the production bundle:
 npm run build
 npm run preview
 ```
+
+## GitHub Pages
+
+The `Deploy AftonHistoric to GitHub Pages` workflow builds and deploys the site whenever a commit is pushed to `main`. Enable GitHub Pages for the repository with **Settings > Pages > Build and deployment > GitHub Actions**. The site is published at `https://jwitcoski.github.io/AftonHistoric/` after the first successful deployment. The workflow builds with the repository subpath so terrain and vector assets resolve correctly on Pages.
 
 ## Data workflows
 

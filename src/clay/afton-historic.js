@@ -14,7 +14,7 @@ import { addTrees } from "./trees.js";
 import { makeHeightGrid } from "./height-grid.js";
 import { appendRibbon, meshFromPositions } from "./map-geometry.js";
 
-const SCENE_BASE = "/data/afton-clay/";
+const SCENE_BASE = `${import.meta.env.BASE_URL}data/afton-clay/`;
 const HERO_SPAN = 100;
 const ERA_TEXT = {
   1855: {
@@ -471,7 +471,7 @@ export async function mountAftonHistoricMap() {
   try {
     const [manifest, gltf] = await Promise.all([
       fetchJson(`${SCENE_BASE}scene-manifest.json`),
-      new GLTFLoader().loadAsync("/data/terrain/terrain-mesh.glb"),
+      new GLTFLoader().loadAsync(`${import.meta.env.BASE_URL}data/terrain/terrain-mesh.glb`),
     ]);
     const vectorEntries = await Promise.all(Object.entries(manifest.vectors).map(async ([name, path]) => [
       name,
