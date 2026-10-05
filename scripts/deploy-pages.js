@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const repositoryRoot = dirname(fileURLToPath(import.meta.url));
+const repositoryRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const outputDirectory = join(repositoryRoot, 'dist');
 const temporaryDirectory = mkdtempSync(join(tmpdir(), 'aftonhistoric-pages-'));
 
