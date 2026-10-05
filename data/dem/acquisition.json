@@ -1,0 +1,16 @@
+{
+  "provider": "USGS 3D Elevation Program (3DEP)",
+  "bbox_wgs84": {
+    "west": -92.88,
+    "south": 44.86,
+    "east": -92.7,
+    "north": 44.96
+  },
+  "next_steps": [
+    "Select a DEM product and target resolution for the project area.",
+    "Download a clipped GeoTIFF from The National Map Downloader.",
+    "Reproject to the project coordinate system and inspect vertical units.",
+    "Run scripts/process/terrain_placeholder.py to prepare mesh-generation inputs."
+  ],
+  "service": "https://epqs.nationalmap.gov/v1/json"
+}

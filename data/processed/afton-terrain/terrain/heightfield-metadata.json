@@ -1,0 +1,40 @@
+{
+  "format": "uint16_raw",
+  "filename": "heightfield-u16.bin",
+  "dtype": "uint16",
+  "byte_order": "little_endian",
+  "layout": "row_major",
+  "row_0": "north",
+  "col_0": "west",
+  "rows": 433,
+  "cols": 661,
+  "cell_size_m": 5.0,
+  "nodata_uint16": 65535,
+  "elevation_offset_m": 205.004150390625,
+  "elevation_scale_m": 0.001601865040057928,
+  "elevation_reconstruction": "elevation_m = elevation_offset_m + uint16_value * elevation_scale_m",
+  "elevation_min_m": 205.004150390625,
+  "elevation_max_m": 309.98077392578125,
+  "bounds_projected_m": {
+    "west_easting": 515409.99638339184,
+    "south_northing": 4971095.322598936,
+    "east_easting": 518714.99638339184,
+    "north_northing": 4973260.322598936
+  },
+  "bounds_local_m": {
+    "min_east_m": 0.0,
+    "min_north_m": 0.0,
+    "max_east_m": 3305.0,
+    "max_north_m": 2165.0
+  },
+  "pixel_to_projected": {
+    "easting_m": "west_easting + (col + 0.5) * cell_size_m",
+    "northing_m": "north_northing - (row + 0.5) * cell_size_m"
+  },
+  "pixel_to_game": {
+    "x": "easting_m - local_origin.easting_m",
+    "y": "elevation_m",
+    "z": "-(northing_m - local_origin.northing_m)"
+  },
+  "kind": "gameplay"
+}

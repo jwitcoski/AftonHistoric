@@ -1,0 +1,40 @@
+{
+  "format": "uint16_raw",
+  "filename": "collision-heightfield-u16.bin",
+  "dtype": "uint16",
+  "byte_order": "little_endian",
+  "layout": "row_major",
+  "row_0": "north",
+  "col_0": "west",
+  "rows": 217,
+  "cols": 331,
+  "cell_size_m": 10.0,
+  "nodata_uint16": 65535,
+  "elevation_offset_m": 205.01087951660156,
+  "elevation_scale_m": 0.0015998759071656746,
+  "elevation_reconstruction": "elevation_m = elevation_offset_m + uint16_value * elevation_scale_m",
+  "elevation_min_m": 205.01087951660156,
+  "elevation_max_m": 309.8571472167969,
+  "bounds_projected_m": {
+    "west_easting": 515409.99638339184,
+    "south_northing": 4971090.322598936,
+    "east_easting": 518719.99638339184,
+    "north_northing": 4973260.322598936
+  },
+  "bounds_local_m": {
+    "min_east_m": 0.0,
+    "min_north_m": -5.0,
+    "max_east_m": 3310.0,
+    "max_north_m": 2165.0
+  },
+  "pixel_to_projected": {
+    "easting_m": "west_easting + (col + 0.5) * cell_size_m",
+    "northing_m": "north_northing - (row + 0.5) * cell_size_m"
+  },
+  "pixel_to_game": {
+    "x": "easting_m - local_origin.easting_m",
+    "y": "elevation_m",
+    "z": "-(northing_m - local_origin.northing_m)"
+  },
+  "kind": "collision"
+}
