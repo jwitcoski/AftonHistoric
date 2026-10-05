@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:pages": "npm run build -- --base=/AftonHistoric/ && node scripts/deploy-pages.js"
   },
   "dependencies": {
     "gsap": "^3.14.2",

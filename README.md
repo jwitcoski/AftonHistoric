@@ -26,7 +26,15 @@ npm run preview
 
 ## GitHub Pages
 
-The `Deploy AftonHistoric to GitHub Pages` workflow builds and deploys the site whenever a commit is pushed to `main`. Enable GitHub Pages for the repository with **Settings > Pages > Build and deployment > GitHub Actions**. The site is published at `https://jwitcoski.github.io/AftonHistoric/` after the first successful deployment. The workflow builds with the repository subpath so terrain and vector assets resolve correctly on Pages.
+The site is published at `https://jwitcoski.github.io/AftonHistoric/` from the `gh-pages` branch. Configure GitHub Pages with **Settings > Pages > Build and deployment > Deploy from a branch**, selecting `gh-pages` and `/`.
+
+Publish an updated build with:
+
+```sh
+npm run deploy:pages
+```
+
+The deploy command builds with the repository subpath and pushes only the generated `dist` site to `gh-pages`.
 
 ## Data workflows
 
