@@ -4,6 +4,15 @@ import "leaflet/dist/leaflet.css";
 const COUNTY = "https://maps.co.washington.mn.us/arcgis/rest/services/GISViewer";
 const USGS = "https://basemap.nationalmap.gov/arcgis/rest/services";
 const AFTON = [44.8995, -92.7835];
+const COUNTY_BOUNDARY_LAYER = 1;
+
+// Always on, so it is drawn as a thick vector outline instead of a toggle.
+async function addCountyBoundary(map) {
+  const geojson = await getJson(`${COUNTY}/Boundaries/MapServer/${COUNTY_BOUNDARY_LAYER}/query?where=1%3D1&outFields=&outSR=4326&f=geojson`);
+  const casing = L.geoJSON(geojson, { style: { color: "#fff7e8", weight: 11, opacity: 0.9, lineJoin: "round" }, interactive: false }).addTo(map);
+  L.geoJSON(geojson, { style: { color: "#b75e40", weight: 6, opacity: 1, lineJoin: "round" }, interactive: false }).addTo(map);
+  map.fitBounds(casing.getBounds(), { padding: [20, 20] });
+}
 
 // ArcGIS MapServer layers drawn as Web Mercator export images, one request per tile.
 const ArcGisLayers = L.TileLayer.extend({
@@ -33,7 +42,7 @@ async function buildLayerPanel(map, panel) {
     const name = s.name.split("/").pop();
     const info = await getJson(`${COUNTY}/${name}/MapServer?f=json`);
     // Group layers (with sublayers) are skipped; their children are listed instead.
-    return { name, layers: info.layers.filter((layer) => !layer.subLayerIds?.length) };
+    return { name, layers: info.layers.filter((layer) => !layer.subLayerIds?.length && !(name === "Boundaries" && layer.id === COUNTY_BOUNDARY_LAYER)) };
   }));
 
   for (const { name, layers } of services.filter((service) => service.layers.length)) {
@@ -76,6 +85,7 @@ export async function mountCountyLanding({ enterTour }) {
     .on("click", enterTour);
 
   const panel = document.querySelector("#county-layers");
+  addCountyBoundary(map).catch((error) => console.error("County boundary failed to load", error));
   try {
     await buildLayerPanel(map, panel);
   } catch (error) {
