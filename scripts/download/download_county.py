@@ -23,6 +23,11 @@ LAYERS = {
     "historic-parcels": ("Cadastral_PV", 21),
     "plats": ("Cadastral_PV", 22),
 }
+# Parcels carry owner names, mailing addresses and sale/value data; keep only property facts.
+PARCEL_FIELDS = (
+    "PIN", "TAXPIN", "Acres_Poly", "USE1_DESC", "USE2_DESC", "PLAT_NAME", "BLOCK", "LOT",
+    "YEAR_BUILT", "SITUS_ADDRESS", "BLDG_NUM", "CITY", "ZIP",
+)
 
 
 def query(service, layer, bbox):
@@ -62,6 +67,9 @@ def main():
         out.mkdir(parents=True, exist_ok=True)
         for name, (service, layer) in LAYERS.items():
             collection = query(service, layer, tour["bbox"])
+            if name == "parcels":
+                for feature in collection["features"]:
+                    feature["properties"] = {k: feature["properties"].get(k) for k in PARCEL_FIELDS}
             (out / f"{name}.geojson").write_text(json.dumps(collection), encoding="utf-8")
             print(f"{tour['id']}/{name}: {len(collection['features'])} features")
 

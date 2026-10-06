@@ -98,5 +98,5 @@ Rules for every sprint:
 1. Valley Creek site list and area, needed before its bbox and content can be defined.
 2. Final era per stop and the 1855 main-street building list.
 3. ~~`HistoricParcels` and `Plats` attributes~~ Answered in sprint 1: `HistoricParcels` has only `PIN` (15 in the Old Village bbox, no dates). `Plats` has plat name, recorded date and a PDF link (`Plat_Link`), 5 in the bbox, so plats are links, not georeferenced images.
-5. Privacy: county `Parcels` include owner names and mailing addresses. Strip `OWNER_*` and `OWN_ADD_*` before publishing; `data/county/` is not committed until this is done.
+5. ~~Privacy~~ Done: county `Parcels` include owner names, mailing addresses, sale and value data. The fetcher keeps only an allowlist of property fields (`PARCEL_FIELDS`), and `data/county/` was checked for leftover owner fields.
 4. Basemap for the county 2D map: tiles from a free provider, or the county `Terrain` cache.
