@@ -114,6 +114,14 @@ Rules for every sprint:
 - The export step adds each site's county parcel ID and plat to its popup. All 10 sites matched a parcel (plat AFTON). Owner data is not included.
 - Deferred: play, pause and the audio transcript (no narration audio exists yet), and the era fade.
 
+## Sprint 5 notes
+
+- The page opens on a county landing page (`src/landing/`): history text, a Leaflet map, and tour cards. The Afton marker and the Old Village card go to `#tour/old-village`; Valley Creek is a disabled "Coming soon" card, since its location isn't known. `?debug` URLs still open the 3D scene directly.
+- Basemap is the USGS National Map imagery and topo tiles (public domain, no key). The county `Terrain` service can't be used: it has no layers, its export returns a blank image, and its tile cache is in a different coordinate system.
+- The layer panel lists every county service's layers from the server's metadata and draws them as Web Mercator export images. The county server allows any origin (CORS), so this works from GitHub Pages.
+- The history text is a paraphrase of the Wikipedia article (CC BY-SA 4.0, credited on the page). Other sources are still to be added.
+- Added dependency: `leaflet`.
+
 ## Open questions
 
 1. Valley Creek site list and area, needed before its bbox and content can be defined.

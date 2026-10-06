@@ -7,7 +7,27 @@
   <title>Afton, Across Time | Afton Historic</title>
 </head>
 <body>
-  <div id="afton-map" class="afton-map" aria-label="Three-dimensional terrain and map of Afton, Minnesota">
+  <div id="county-landing" class="county-landing">
+    <article class="county-text">
+      <div class="eyebrow"><span></span> WASHINGTON COUNTY, MINNESOTA</div>
+      <h1>Where the St. Croix shaped a county</h1>
+      <p>Washington County lies on the east side of Minnesota. The St. Croix River forms its eastern edge, across from Wisconsin, and the Mississippi marks its southwest corner. In the early years the St. Croix carried settlers upstream and logs downstream, and the heavily forested valley supported an early lumber economy.</p>
+      <p>The first settlers reached the place that became Afton in 1837. A settlement named Dacotah began in 1838 where Brown's Creek meets the St. Croix, at the north edge of today's Stillwater. Sawmills at Marine on St. Croix (1839) and in what is now downtown Stillwater (1844) drew people away from it, and Dacotah declined.</p>
+      <p>The area belonged to Wisconsin Territory until Wisconsin became a state in 1848. That August, leaders met at the Stillwater Convention and petitioned Congress for a new territory named Minnesota, which is why Stillwater calls itself the Birthplace of Minnesota. Minnesota Territory was created on March 3, 1849, and its legislature made Washington County one of its first nine counties that October, with Stillwater as county seat.</p>
+      <p>When the forests were gone, farming became the main economy. Parts of the county later grew around recreation and tourism, and late in the twentieth century suburban growth from St. Paul brought the population to 267,568 by the 2020 census.</p>
+      <h2>EXPLORE THE TOURS</h2>
+      <div class="tour-cards">
+        <button id="enter-old-village" class="tour-card" type="button"><strong>Afton's Old Village Tour</strong><span>10 historic sites along St. Croix Trail South, 1855 to today</span></button>
+        <button class="tour-card" type="button" disabled><strong>Valley Creek Tour</strong><span>Coming soon</span></button>
+      </div>
+      <p><small>History text adapted from <a href="https://en.wikipedia.org/wiki/Washington_County,_Minnesota" target="_blank" rel="noreferrer">Wikipedia, Washington County, Minnesota</a> (CC BY-SA 4.0). More sources, including the <a href="https://www.wchsmn.org/" target="_blank" rel="noreferrer">Washington County Historical Society</a>, will be added.</small></p>
+    </article>
+    <div class="county-map-wrap">
+      <div id="county-map" role="application" aria-label="Map of Washington County, Minnesota"></div>
+      <section id="county-layers" class="county-layers" aria-label="Washington County GIS layers"><strong>COUNTY GIS LAYERS</strong></section>
+    </div>
+  </div>
+  <div id="afton-map" class="afton-map" aria-label="Three-dimensional terrain and map of Afton, Minnesota" hidden>
     <canvas id="afton-canvas"></canvas>
     <header class="afton-topbar">
       <a class="afton-brand" href="#" aria-label="Afton Historic home">
