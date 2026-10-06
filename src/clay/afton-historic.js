@@ -20,12 +20,12 @@ const ERA_TEXT = {
   1855: {
     title: "A river town takes root.",
     description: "Founding era · 1855",
-    caption: "FOUNDING ERA · HISTORIC LAYERS AWAIT SOURCES",
+    caption: "FOUNDING ERA · MAIN STREET ONLY · PRESENT-DAY BUILDING FOOTPRINTS",
   },
   1971: {
     title: "A community finds its voice.",
     description: "Incorporation era · 1971",
-    caption: "INCORPORATION ERA · HISTORIC LAYERS AWAIT SOURCES",
+    caption: "INCORPORATION ERA · PRESENT-DAY LAYERS UNTIL 1971 SOURCES ARE ADDED",
   },
   2026: {
     title: "A living town, still unfolding.",
@@ -79,7 +79,7 @@ function addRoads(parent, collection, center, sample) {
   return roadGroup;
 }
 
-function addCars(parent, collection, center, sample) {
+function addCars(parent, collection, center, sample, { build, maxCars = 24, name = "afton-osm-road-cars" } = {}) {
   const vehicleRoads = new Set(["primary", "secondary", "tertiary", "residential", "unclassified"]);
   const carGeometry = new THREE.BoxGeometry(6.2, 1.25, 2.6);
   const cabinGeometry = new THREE.BoxGeometry(3.1, 1.2, 2.1);
@@ -91,9 +91,8 @@ function addCars(parent, collection, center, sample) {
     new THREE.MeshLambertMaterial({ color, flatShading: true }),
   );
   const cars = new THREE.Group();
-  cars.name = "afton-osm-road-cars";
+  cars.name = name;
   const routes = [];
-  const maxCars = 24;
   const villageRadius = 650;
   const routeSampleStep = 16;
 
@@ -161,7 +160,7 @@ function addCars(parent, collection, center, sample) {
     if (vehicles.length >= maxCars) break;
   }
 
-  function createCar(vehicle, index) {
+  function buildCar(index) {
     const car = new THREE.Group();
     const body = new THREE.Mesh(carGeometry, bodyMaterials[index % bodyMaterials.length]);
     body.position.y = 1.25;
@@ -176,6 +175,11 @@ function addCars(parent, collection, center, sample) {
         car.add(wheel);
       }
     }
+    return car;
+  }
+
+  function createCar(vehicle, index) {
+    const car = build ? build(index) : buildCar(index);
     car.position.set(vehicle.x, sample(vehicle.x, vehicle.z) + 0.3, vehicle.z);
     car.rotation.y = routePose(vehicle.route, vehicle.distance).yaw + (vehicle.direction < 0 ? Math.PI : 0);
     car.scale.setScalar(1.5);
@@ -437,6 +441,59 @@ function addHistoricSites(parent, collection, buildingCollection, center, sample
   return { group, pickables, siteTargets, sites: siteFeatures.map((feature) => feature.properties) };
 }
 
+const MAIN_STREET = "Saint Croix Trail South";
+const MAIN_STREET_REACH = 35;
+// 1855 shows only these layers; present-day layers (and cars) are hidden.
+const ERA_1855_ONLY = new Set(["mainStreet", "buildings1855", "horses"]);
+const ERA_1855_KEPT = new Set(["terrain", "water", "historic_sites"]);
+
+function eraShows(layer, era) {
+  if (ERA_1855_ONLY.has(layer)) return era === 1855;
+  return era !== 1855 || ERA_1855_KEPT.has(layer);
+}
+
+function buildHorse() {
+  const horse = new THREE.Group();
+  const coat = new THREE.MeshLambertMaterial({ color: 0x7a4a2b, flatShading: true });
+  const part = (w, h, d, x, y, z) => {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), coat);
+    mesh.position.set(x, y, z);
+    horse.add(mesh);
+    return mesh;
+  };
+  part(3.4, 1.3, 1.1, 0, 2.3, 0);
+  part(0.7, 1.7, 0.7, 1.9, 3.0, 0).rotation.z = -0.4;
+  part(1.1, 0.7, 0.6, 2.7, 3.7, 0);
+  for (const x of [-1.3, 1.3]) for (const z of [-0.35, 0.35]) part(0.3, 1.7, 0.3, x, 0.85, z);
+  return horse;
+}
+
+// Buildings whose centroid lies within `reach` metres of a line in `roads`, plus any listed in `keepIds`.
+function featuresNearRoads(collection, roads, center, reach, keepIds) {
+  const segments = [];
+  for (const road of roads) {
+    for (const line of lineParts(road.geometry)) {
+      for (let index = 1; index < line.length; index += 1) {
+        segments.push([localXZ(line[index - 1][0], line[index - 1][1], center), localXZ(line[index][0], line[index][1], center)]);
+      }
+    }
+  }
+  const distance = (p, [a, b]) => {
+    const dx = b.x - a.x;
+    const dz = b.z - a.z;
+    const t = THREE.MathUtils.clamp(((p.x - a.x) * dx + (p.z - a.z) * dz) / (dx * dx + dz * dz || 1), 0, 1);
+    return Math.hypot(p.x - a.x - t * dx, p.z - a.z - t * dz);
+  };
+  return (collection?.features || []).filter((feature) => {
+    if (keepIds.has(`${feature.properties?.osm_type}/${feature.properties?.osm_id}`)) return true;
+    return polygonParts(feature.geometry).some((polygon) => {
+      const points = (polygon[0] || []).map((c) => localXZ(c[0], c[1], center));
+      const centroid = { x: points.reduce((s, p) => s + p.x, 0) / points.length, z: points.reduce((s, p) => s + p.z, 0) / points.length };
+      return segments.some((segment) => distance(centroid, segment) <= reach);
+    });
+  });
+}
+
 function colorTerrain(mesh) {
   const position = mesh.geometry.attributes.position;
   const normal = mesh.geometry.attributes.normal;
@@ -521,6 +578,18 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
     layerGroups.places = decor.children[decor.children.length - 1];
     const historicLayer = addHistoricSites(decor, vectorData.historic_sites, vectorData.buildings, center, sample, unitScale);
     layerGroups.historic_sites = historicLayer.group;
+
+    const mainStreet = { type: "FeatureCollection", features: (vectorData.roads?.features || []).filter((f) => f.properties?.name === MAIN_STREET) };
+    const siteBuildings = new Set((vectorData.historic_sites?.features || []).map((f) => f.properties?.osm_building_feature));
+    const mainStreetBuildings = { type: "FeatureCollection", features: featuresNearRoads(vectorData.buildings, mainStreet.features, center, MAIN_STREET_REACH, siteBuildings) };
+    addRoads(decor, mainStreet, center, sample);
+    layerGroups.mainStreet = decor.children[decor.children.length - 1];
+    layerGroups.mainStreet.name = "afton-1855-main-street";
+    addBuildings(decor, mainStreetBuildings, center, sample);
+    layerGroups.buildings1855 = decor.children[decor.children.length - 1];
+    layerGroups.buildings1855.name = "afton-1855-buildings";
+    const horseLayer = addCars(decor, mainStreet, center, sample, { build: buildHorse, maxCars: 6, name: "afton-1855-horses" });
+    layerGroups.horses = horseLayer.group;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("#d7e2df");
@@ -656,11 +725,9 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
     const eraManager = { current: 1855 };
     const setEra = (year) => {
       eraManager.current = Number(year);
-      const current = eraManager.current === 2026;
       Object.entries(layerGroups).forEach(([name, group]) => {
         const input = document.querySelector(`[data-afton-layer="${name}"]`);
-        const eraVisible = name === "terrain" || name === "historic_sites" || current;
-        group.visible = eraVisible && (!input || input.checked);
+        group.visible = eraShows(name, eraManager.current) && (!input || input.checked);
       });
       const data = ERA_TEXT[eraManager.current];
       document.querySelector("#afton-title").textContent = data.title;
@@ -678,7 +745,7 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
     document.querySelectorAll("[data-afton-layer]").forEach((input) => {
       input.addEventListener("change", () => {
         const group = layerGroups[input.dataset.aftonLayer];
-        if (group) group.visible = (["terrain", "historic_sites"].includes(input.dataset.aftonLayer) || eraManager.current === 2026) && input.checked;
+        if (group) group.visible = eraShows(input.dataset.aftonLayer, eraManager.current) && input.checked;
       });
     });
     document.querySelector("#afton-layers-toggle").addEventListener("click", () => {
@@ -692,7 +759,8 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
       camera,
       reduceMotion,
       updateCars: (deltaSeconds) => {
-        if (eraManager.current === 2026) carLayer.update(deltaSeconds);
+        if (eraManager.current === 1855) horseLayer.update(deltaSeconds);
+        else carLayer.update(deltaSeconds);
       },
     };
     let lastTime = performance.now();

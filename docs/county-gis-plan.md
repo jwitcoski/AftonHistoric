@@ -100,6 +100,13 @@ Rules for every sprint:
 - `scripts/export/check_county_alignment.py` passes: all 10 sites sit on a county parcel and within 40 m of a county road.
 - `mountAftonHistoricMap(sceneDir)` takes the scene folder, defaulting to `afton-clay`.
 
+## Sprint 3 notes
+
+- 1855 shows terrain, water, historic-site highlights, St Croix Trail S only, buildings whose centroid is within 35 m of it plus every stop's building (so the three side-street stops stay visible), and horses on that road. Landuse, trees, places, other roads and cars are hidden.
+- 1971 and Today show the same present-day layers and cars for now.
+- The 1855 building footprints are still present-day OSM footprints; the caption says so. They need a source before the 1855 view counts as historic evidence.
+- The era change is instant. A fade, and setting the era per stop, belong to the sprint 4 tour driver.
+
 ## Open questions
 
 1. Valley Creek site list and area, needed before its bbox and content can be defined.
