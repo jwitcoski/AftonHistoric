@@ -122,6 +122,12 @@ Rules for every sprint:
 - The history text is a paraphrase of the Wikipedia article (CC BY-SA 4.0, credited on the page). Other sources are still to be added.
 - Added dependency: `leaflet`.
 
+## Sprint 6 notes
+
+- Blocked on content. The Valley Creek tour is the print brochure "Historic Afton Valley Creek Tour" (available at the Afton Historical Museum); the City's HPC site (historicplace.org/afton) publishes only the Old Village sites. Needed from the HPC: the 10 sites with addresses or coordinates, descriptions and sources, and the tour area.
+- Once supplied, the work is: add the sites file and a `bbox` for `valley-creek` in `tours.json`, run `download_county.py --tour valley-creek`, build a terrain and OSM scene for that area (the export script is Old-Village-specific), and turn the landing card on.
+- Useful context from the HPC page for the Old Village intro and eras: the village was platted in 1855, incorporated in the early 1910s, and merged with Afton Township in 1971 to become the City of Afton.
+
 ## Open questions
 
 1. Valley Creek site list and area, needed before its bbox and content can be defined.
