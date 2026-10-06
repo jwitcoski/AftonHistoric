@@ -24,7 +24,10 @@
     </article>
     <div class="county-map-wrap">
       <div id="county-map" role="application" aria-label="Map of Washington County, Minnesota"></div>
-      <section id="county-layers" class="county-layers" aria-label="Washington County GIS layers"><strong>COUNTY GIS LAYERS</strong></section>
+      <section id="county-layers" class="county-layers" aria-label="Washington County GIS layers">
+        <button id="county-layers-toggle" type="button" aria-expanded="true" aria-controls="county-layers-body">County GIS layers</button>
+        <div id="county-layers-body"></div>
+      </section>
     </div>
   </div>
   <div id="afton-map" class="afton-map" aria-label="Three-dimensional terrain and map of Afton, Minnesota" hidden>
@@ -41,10 +44,11 @@
     </header>
 
     <main class="afton-main">
+      <p id="era-banner" class="era-banner">Illustrative view. Not a historical reconstruction.</p>
       <section class="era-panel" aria-label="Afton history">
         <div class="eyebrow"><span></span> CITY OF AFTON · ST. CROIX VALLEY</div>
-        <h1 id="afton-title">A river town takes root.</h1>
-        <p id="afton-description">Founding era · 1855</p>
+        <h1 id="afton-title">Illustrative view, 1855</h1>
+        <p id="afton-description">Present-day layers are hidden. This is not a reconstruction of founding-era Afton.</p>
         <button id="start-tour" class="tour-start" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z" /></svg><span>Take Afton's Old Village tour</span></button>
         <div class="era-control">
           <span>EXPLORE AN ERA</span>
@@ -54,14 +58,14 @@
             <button type="button" data-afton-era="2026" aria-pressed="false">Today</button>
           </div>
         </div>
-        <div class="era-footnote">Modern map and elevation data are context only; historical layers await verified source material.</div>
+        <div class="era-footnote">1855 and 1971 change which present-day layers are visible. They are not verified historic scenes.</div>
       </section>
 
       <section id="afton-layers" class="layers-panel" aria-label="Map layers" hidden>
         <div class="layers-heading"><span>MAP LAYERS</span><button type="button" id="afton-layers-close" class="mini-close" aria-label="Close map layers">×</button></div>
         <label><input type="checkbox" data-afton-layer="terrain" checked /><i class="swatch terrain-swatch"></i><span>DEM terrain relief</span></label>
         <label><input type="checkbox" data-afton-layer="trees" checked /><i class="swatch tree-swatch"></i><span>OSM woodland trees</span></label>
-        <label><input type="checkbox" data-afton-layer="roads" checked /><i class="swatch road-swatch"></i><span>County roads</span></label>
+        <label><input type="checkbox" data-afton-layer="roads" checked /><i class="swatch road-swatch"></i><span>OpenStreetMap roads</span></label>
         <label><input type="checkbox" data-afton-layer="cars" checked /><i class="swatch car-swatch"></i><span>Road vehicles</span></label>
         <label><input type="checkbox" data-afton-layer="buildings" checked /><i class="swatch building-swatch"></i><span>OSM building footprints</span></label>
         <label><input type="checkbox" data-afton-layer="water" checked /><i class="swatch water-swatch"></i><span>OSM water</span></label>
@@ -76,6 +80,13 @@
         <h2 id="historic-popup-title"></h2>
         <p id="historic-popup-address"></p>
         <p id="historic-popup-description"></p>
+        <figure id="historic-popup-media" class="popup-media" hidden>
+          <img id="historic-popup-photo" alt="" />
+          <figcaption id="historic-popup-photo-credit"></figcaption>
+          <p class="sample-label">Sample photograph and narration for this stop only</p>
+          <audio id="historic-popup-audio" controls preload="metadata"></audio>
+          <p id="historic-popup-transcript"></p>
+        </figure>
         <p id="historic-popup-parcel" hidden></p>
         <div class="popup-links"><a id="historic-popup-source" href="#" target="_blank" rel="noreferrer">HistoricPlace record ↗</a><a id="historic-popup-map" href="#" target="_blank" rel="noreferrer">Map location ↗</a></div>
         <div class="popup-navigation"><button id="historic-popup-prev" type="button" aria-label="Previous tour stop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg><span>Previous</span></button><button id="historic-popup-next" type="button" aria-label="Next tour stop"><span>Next stop</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></button></div>

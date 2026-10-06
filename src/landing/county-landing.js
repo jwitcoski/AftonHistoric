@@ -84,7 +84,21 @@ export async function mountCountyLanding({ enterTour }) {
     .bindTooltip("Afton Old Village Tour", { permanent: true, direction: "right", offset: [10, 0] })
     .on("click", enterTour);
 
-  const panel = document.querySelector("#county-layers");
+  const panel = document.querySelector("#county-layers-body");
+  const layers = document.querySelector("#county-layers");
+  const toggle = document.querySelector("#county-layers-toggle");
+  const narrow = window.matchMedia("(max-width: 900px)");
+  const setLayersOpen = (open) => {
+    layers.classList.toggle("is-collapsed", !open);
+    toggle.setAttribute("aria-expanded", String(open));
+  };
+  setLayersOpen(!narrow.matches);
+  toggle.addEventListener("click", () => setLayersOpen(layers.classList.contains("is-collapsed")));
+  narrow.addEventListener("change", () => {
+    setLayersOpen(!narrow.matches);
+    map.invalidateSize();
+  });
+  window.addEventListener("resize", () => map.invalidateSize());
   addCountyBoundary(map).catch((error) => console.error("County boundary failed to load", error));
   try {
     await buildLayerPanel(map, panel);

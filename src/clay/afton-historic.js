@@ -18,14 +18,14 @@ const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 const HERO_SPAN = 100;
 const ERA_TEXT = {
   1855: {
-    title: "A river town takes root.",
-    description: "Founding era · 1855",
-    caption: "FOUNDING ERA · MAIN STREET ONLY · PRESENT-DAY BUILDING FOOTPRINTS",
+    title: "Illustrative view, 1855",
+    description: "Present-day layers are hidden. This is not a reconstruction of founding-era Afton.",
+    caption: "ILLUSTRATIVE · 1855 · NOT A HISTORICAL RECONSTRUCTION",
   },
   1971: {
-    title: "A community finds its voice.",
-    description: "Incorporation era · 1971",
-    caption: "INCORPORATION ERA · PRESENT-DAY LAYERS UNTIL 1971 SOURCES ARE ADDED",
+    title: "Illustrative view, 1971",
+    description: "The present-day map is shown as context. This is not a reconstruction of incorporation-era Afton.",
+    caption: "ILLUSTRATIVE · 1971 · NOT A HISTORICAL RECONSTRUCTION",
   },
   2026: {
     title: "A living town, still unfolding.",
@@ -649,6 +649,39 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
     let selectedSiteIndex = -1;
     let tourActive = false;
     const popup = document.querySelector("#historic-popup");
+    const popupAudio = document.querySelector("#historic-popup-audio");
+    const hideSampleMedia = () => {
+      popupAudio.pause();
+      popupAudio.removeAttribute("src");
+      document.querySelector("#historic-popup-media").hidden = true;
+    };
+    const showSampleMedia = (site) => {
+      const media = document.querySelector("#historic-popup-media");
+      if (!site.samplePhoto && !site.sampleAudio) {
+        hideSampleMedia();
+        return;
+      }
+      const photo = document.querySelector("#historic-popup-photo");
+      photo.src = site.samplePhoto ? `${import.meta.env.BASE_URL}${site.samplePhoto}` : "";
+      photo.alt = site.samplePhotoAlt || "";
+      photo.hidden = !site.samplePhoto;
+      const credit = document.querySelector("#historic-popup-photo-credit");
+      credit.textContent = "";
+      if (site.samplePhotoCredit) {
+        const link = document.createElement("a");
+        link.href = site.samplePhotoCreditUrl || "#";
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = site.samplePhotoCredit;
+        credit.append("Photograph: ", link, ". Sample only; not a project photograph.");
+      }
+      const transcript = document.querySelector("#historic-popup-transcript");
+      transcript.textContent = site.sampleTranscript ? `Transcript: ${site.sampleTranscript}` : "";
+      popupAudio.pause();
+      if (site.sampleAudio) popupAudio.src = `${import.meta.env.BASE_URL}${site.sampleAudio}`;
+      else popupAudio.removeAttribute("src");
+      media.hidden = false;
+    };
     const focusHistoricSite = (index) => {
       const target = historicLayer.siteTargets[index];
       if (!target) return;
@@ -671,6 +704,7 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
       document.querySelector("#historic-popup-title").textContent = site.name;
       document.querySelector("#historic-popup-address").textContent = site.address;
       document.querySelector("#historic-popup-description").textContent = site.description;
+      showSampleMedia(site);
       if (inTour && site.era) setEra(site.era);
       const parcel = document.querySelector("#historic-popup-parcel");
       parcel.hidden = !site.parcel_pin;
@@ -699,6 +733,7 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
       document.querySelector("#historic-popup-title").textContent = "Welcome to Afton";
       document.querySelector("#historic-popup-address").textContent = "St. Croix Trail South, Afton, Minnesota";
       document.querySelector("#historic-popup-description").textContent = "Afton sits on the St. Croix River in Washington County. Follow St. Croix Trail South, the village's main street, through ten historic sites. Some stops step back to 1855 or forward to 1971.";
+      hideSampleMedia();
       document.querySelector("#historic-popup-parcel").hidden = true;
       document.querySelectorAll(".popup-links a").forEach((link) => { link.hidden = true; });
       document.querySelector("#historic-popup-prev").disabled = true;
@@ -727,6 +762,7 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
     canvas.addEventListener("pointerdown", canvasPointerDown);
     canvas.addEventListener("pointerup", canvasPointerUp);
     document.querySelector("#historic-popup-close").addEventListener("click", () => {
+      hideSampleMedia();
       popup.hidden = true;
       if (tourActive) setEra(2026);
       tourActive = false;
@@ -768,6 +804,7 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
       document.querySelector("#afton-title").textContent = data.title;
       document.querySelector("#afton-description").textContent = data.description;
       document.querySelector("#afton-caption").textContent = data.caption;
+      document.querySelector("#era-banner").hidden = eraManager.current === 2026;
       document.querySelectorAll("[data-afton-era]").forEach((button) => {
         const active = Number(button.dataset.aftonEra) === eraManager.current;
         button.setAttribute("aria-pressed", String(active));

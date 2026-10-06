@@ -31,6 +31,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .era-panel { position: absolute; top: clamp(28px, 7vh, 64px); left: clamp(18px, 4.4vw, 68px); width: min(340px, calc(100vw - 36px)); padding: 24px 24px 0; border: 1px solid rgba(45, 65, 54, 0.13); background: var(--paper); box-shadow: 0 15px 46px rgba(40, 56, 47, 0.13); pointer-events: auto; animation: enter 550ms ease both; }
 .eyebrow { display: flex; align-items: center; gap: 8px; color: #7b887e; font-size: 8px; font-weight: 700; letter-spacing: 0.13em; }
 .eyebrow span, .caption-rule { width: 19px; height: 1px; background: var(--rust); }
+.era-banner { position: absolute; z-index: 3; top: 16px; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 36px); margin: 0; padding: 8px 14px; background: #8c3b24; color: #fff7e8; font-size: 12px; font-weight: 750; letter-spacing: 0.03em; line-height: 1.35; text-align: center; box-shadow: 0 8px 24px rgba(80, 32, 18, 0.28); pointer-events: none; }
+.era-banner[hidden] { display: none; }
 .era-panel h1 { margin: 18px 0 9px; color: #31473b; font: 500 31px/1.17 Georgia, "Iowan Old Style", serif; }
 .era-panel p { min-height: 20px; margin: 0; color: #69766d; font-size: 11px; line-height: 1.6; }
 .tour-start { display: flex; width: 100%; min-height: 41px; align-items: center; gap: 9px; margin-top: 14px; padding: 0 11px; border: 1px solid var(--forest); background: var(--forest); color: #fff; font-size: 10px; font-weight: 650; text-align: left; cursor: pointer; transition: background 160ms ease; }
@@ -69,6 +71,12 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .historic-popup h2 { margin: 12px 24px 7px 0; color: #31473b; font: 500 22px/1.2 Georgia, "Iowan Old Style", serif; }
 .historic-popup p { margin: 0 0 9px; color: #65736a; font-size: 11px; line-height: 1.55; }
 .historic-popup #historic-popup-address { color: #8b6650; font-size: 10px; font-weight: 650; }
+.popup-media { margin: 0 0 10px; }
+.popup-media[hidden] { display: none; }
+.popup-media img { display: block; width: 100%; height: auto; }
+.popup-media figcaption, .popup-media #historic-popup-transcript { margin-top: 6px; color: #758078; font-size: 10px; line-height: 1.45; }
+.popup-media .sample-label { margin: 8px 0 6px; color: #8b6650; font-size: 8px; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; }
+.popup-media audio { width: 100%; height: 32px; }
 .popup-links { display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 9px 0 12px; }
 .popup-links a { color: #356c64; font-size: 10px; font-weight: 650; text-decoration: none; }
 .popup-links a:hover { text-decoration: underline; }
