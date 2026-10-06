@@ -1,0 +1,16 @@
+[
+	{
+		"id": "old-village",
+		"name": "Afton's Old Village Tour",
+		"status": "live",
+		"bbox": {"south": 44.8935, "west": -92.7885, "north": 44.9050, "east": -92.7785},
+		"siteSource": "data/historic/sites.json"
+	},
+	{
+		"id": "valley-creek",
+		"name": "Valley Creek Tour",
+		"status": "coming-soon",
+		"bbox": null,
+		"siteSource": null
+	}
+]
