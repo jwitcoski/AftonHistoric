@@ -3,6 +3,7 @@
 		"id": "old-village",
 		"name": "Afton's Old Village Tour",
 		"status": "live",
+		"sceneDir": "afton-clay",
 		"bbox": {"south": 44.8935, "west": -92.7885, "north": 44.9050, "east": -92.7785},
 		"siteSource": "data/historic/sites.json"
 	},

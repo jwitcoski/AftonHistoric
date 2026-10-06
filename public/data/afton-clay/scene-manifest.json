@@ -36,28 +36,42 @@
     "height_exaggerate": 1
   },
   "vectors": {
-    "roads": "vectors/roads.geojson",
+    "roads": "vectors/county-streets.geojson",
     "buildings": "vectors/buildings.geojson",
     "water": "vectors/water.geojson",
     "landuse": "vectors/landuse.geojson",
     "places": "vectors/places.geojson",
-    "historic_sites": "vectors/historic-sites.geojson"
+    "historic_sites": "vectors/historic-sites.geojson",
+    "roads_osm": "vectors/roads.geojson",
+    "county_parcels": "vectors/county-parcels.geojson",
+    "county_parks": "vectors/county-parks.geojson",
+    "county_address_points": "vectors/county-address-points.geojson",
+    "county_contours": "vectors/county-contours.geojson",
+    "county_plats": "vectors/county-plats.geojson",
+    "county_historic_parcels": "vectors/county-historic-parcels.geojson"
   },
   "camera": {
     "suggested_hero_span": 100
   },
   "data_counts": {
-    "roads": 171,
+    "roads": 57,
     "buildings": 322,
     "water": 36,
     "landuse": 153,
     "places": 21,
-    "historic_sites": 10
+    "historic_sites": 10,
+    "county_parcels": 185,
+    "county_parks": 3,
+    "county_address_points": 120,
+    "county_contours": 274,
+    "county_plats": 5,
+    "county_historic_parcels": 15
   },
   "attribution": {
     "osm": "\u00a9 OpenStreetMap contributors",
     "dem": "Mapzen Skadi / AWS Terrain Tiles",
-    "license_notes": "OSM data is available under ODbL. Preserve attribution when using or redistributing these assets."
+    "license_notes": "OSM data is available under ODbL. Preserve attribution when using or redistributing these assets.",
+    "county": "Washington County, MN GISViewer services (roads, parcels, parks, addresses, plats); contours derived from 2012 MN DNR lidar."
   },
   "history_note": "The OSM and DEM layers describe the present-day landscape and are shown only for the Today era. No historic scene data is included yet."
 }

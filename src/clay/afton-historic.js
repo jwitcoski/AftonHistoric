@@ -14,7 +14,7 @@ import { addTrees } from "./trees.js";
 import { makeHeightGrid } from "./height-grid.js";
 import { appendRibbon, meshFromPositions } from "./map-geometry.js";
 
-const SCENE_BASE = `${import.meta.env.BASE_URL}data/afton-clay/`;
+const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 const HERO_SPAN = 100;
 const ERA_TEXT = {
   1855: {
@@ -30,7 +30,7 @@ const ERA_TEXT = {
   2026: {
     title: "A living town, still unfolding.",
     description: "Afton today · modern OSM and DEM context",
-    caption: "TODAY · OPENSTREETMAP + SKADI ELEVATION",
+    caption: "TODAY · WASHINGTON COUNTY GIS + OPENSTREETMAP + SKADI ELEVATION",
   },
 };
 
@@ -461,7 +461,8 @@ function colorTerrain(mesh) {
   mesh.material = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide });
 }
 
-export async function mountAftonHistoricMap() {
+export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
+  const SCENE_BASE = `${DATA_BASE}${sceneDir}/`;
   const embed = document.querySelector("#afton-map");
   const canvas = document.querySelector("#afton-canvas");
   const status = document.querySelector("#afton-status");
@@ -473,7 +474,7 @@ export async function mountAftonHistoricMap() {
       fetchJson(`${SCENE_BASE}scene-manifest.json`),
       new GLTFLoader().loadAsync(`${import.meta.env.BASE_URL}data/terrain/terrain-mesh.glb`),
     ]);
-    const vectorEntries = await Promise.all(Object.entries(manifest.vectors).map(async ([name, path]) => [
+    const vectorEntries = await Promise.all(Object.entries(manifest.vectors).filter(([name]) => name !== "roads_osm").map(async ([name, path]) => [
       name,
       await fetchJson(`${SCENE_BASE}${path}`),
     ]));
@@ -705,7 +706,7 @@ export async function mountAftonHistoricMap() {
       setLastTime: (value) => { lastTime = value; },
     });
     runtime.start();
-    status.textContent = `Terrain and ${Object.values(vectorData).reduce((sum, collection) => sum + (collection?.features?.length || 0), 0)} OSM features loaded`;
+    status.textContent = `Terrain and ${Object.values(vectorData).reduce((sum, collection) => sum + (collection?.features?.length || 0), 0)} map features loaded`;
     embed.classList.add("is-ready");
     window.addEventListener("pagehide", () => {
       runtime.dispose();

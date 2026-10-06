@@ -93,6 +93,13 @@ Rules for every sprint:
 3. The Valley Creek marker is visibly "Coming soon" and can't be activated.
 4. Walk the tour: stop 1 switches to 1855 (horses, main street only), stop 3 switches to 1971, and the era returns correctly afterward.
 
+## Sprint 2 findings
+
+- `scripts/export/export_county_vectors.py` writes the county layers in the scene's local frame and points the manifest `roads` at county streets (CFCC `A31` secondary, `A41` and `A61` residential, other roads driveways); the OSM roads stay available as `roads_osm`.
+- County water is not a replacement: `Water/1` is creek divide linework and `Water/2` is label polygons, so OSM water stays. County parks (3) are exported but not drawn, since OSM already has the park landuse.
+- `scripts/export/check_county_alignment.py` passes: all 10 sites sit on a county parcel and within 40 m of a county road.
+- `mountAftonHistoricMap(sceneDir)` takes the scene folder, defaulting to `afton-clay`.
+
 ## Open questions
 
 1. Valley Creek site list and area, needed before its bbox and content can be defined.
