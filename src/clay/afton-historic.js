@@ -671,14 +671,40 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
       document.querySelector("#historic-popup-title").textContent = site.name;
       document.querySelector("#historic-popup-address").textContent = site.address;
       document.querySelector("#historic-popup-description").textContent = site.description;
+      if (inTour && site.era) setEra(site.era);
+      const parcel = document.querySelector("#historic-popup-parcel");
+      parcel.hidden = !site.parcel_pin;
+      parcel.textContent = site.parcel_pin ? `Parcel ${site.parcel_pin} · ${site.parcel_plat || "unplatted"} · Washington County GIS` : "";
+      document.querySelectorAll(".popup-links a").forEach((link) => { link.hidden = false; });
       const sourceLink = document.querySelector("#historic-popup-source");
       sourceLink.href = site.sourceUrl;
       const mapLink = document.querySelector("#historic-popup-map");
       mapLink.href = site.mapUrl;
-      document.querySelector("#historic-popup-prev").disabled = inTour && selectedSiteIndex === 0;
+      document.querySelector("#historic-popup-prev").disabled = false;
       document.querySelector("#historic-popup-next span").textContent = inTour && selectedSiteIndex === count - 1 ? "Finish tour" : "Next stop";
       popup.hidden = false;
       focusHistoricSite(selectedSiteIndex);
+    };
+    // Placeholder intro copy until the HPC narration script exists.
+    const showIntro = () => {
+      selectedSiteIndex = -1;
+      tourActive = true;
+      embed.classList.add("is-touring");
+      setEra(2026);
+      document.querySelector("#historic-popup-order").textContent = "OLD VILLAGE TOUR";
+      document.querySelector("#historic-popup-designation").textContent = "";
+      const tourStep = document.querySelector("#tour-step");
+      tourStep.hidden = false;
+      tourStep.textContent = "INTRO";
+      document.querySelector("#historic-popup-title").textContent = "Welcome to Afton";
+      document.querySelector("#historic-popup-address").textContent = "St. Croix Trail South, Afton, Minnesota";
+      document.querySelector("#historic-popup-description").textContent = "Afton sits on the St. Croix River in Washington County. Follow St. Croix Trail South, the village's main street, through ten historic sites. Some stops step back to 1855 or forward to 1971.";
+      document.querySelector("#historic-popup-parcel").hidden = true;
+      document.querySelectorAll(".popup-links a").forEach((link) => { link.hidden = true; });
+      document.querySelector("#historic-popup-prev").disabled = true;
+      document.querySelector("#historic-popup-next span").textContent = "First stop";
+      popup.hidden = false;
+      controller.reset();
     };
     const canvasPointerDown = (event) => {
       pointerDown = { x: event.clientX, y: event.clientY };
@@ -702,17 +728,26 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
     canvas.addEventListener("pointerup", canvasPointerUp);
     document.querySelector("#historic-popup-close").addEventListener("click", () => {
       popup.hidden = true;
+      if (tourActive) setEra(2026);
       tourActive = false;
       embed.classList.remove("is-touring");
       controller.reset();
     });
     document.querySelector("#historic-popup-prev").addEventListener("click", () => {
-      if (tourActive && selectedSiteIndex === 0) return;
+      if (tourActive && selectedSiteIndex === 0) {
+        showIntro();
+        return;
+      }
       showHistoricSite(selectedSiteIndex - 1, tourActive);
     });
     document.querySelector("#historic-popup-next").addEventListener("click", () => {
+      if (tourActive && selectedSiteIndex === -1) {
+        showHistoricSite(0, true);
+        return;
+      }
       if (tourActive && selectedSiteIndex === historicLayer.sites.length - 1) {
         popup.hidden = true;
+        setEra(2026);
         tourActive = false;
         embed.classList.remove("is-touring");
         controller.reset();
@@ -720,7 +755,7 @@ export async function mountAftonHistoricMap(sceneDir = "afton-clay") {
       }
       showHistoricSite(selectedSiteIndex + 1, tourActive);
     });
-    document.querySelector("#start-tour").addEventListener("click", () => showHistoricSite(0, true));
+    document.querySelector("#start-tour").addEventListener("click", showIntro);
 
     const eraManager = { current: 1855 };
     const setEra = (year) => {

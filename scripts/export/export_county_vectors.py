@@ -71,6 +71,19 @@ def main():
         counts[key] = len(features)
         print(f"{key}: {len(features)} features")
 
+    sites_path = scene / "vectors" / "historic-sites.geojson"
+    sites = json.loads(sites_path.read_text(encoding="utf-8"))
+    eras = {s["id"]: s["era"] for s in json.loads((ROOT / "data" / "historic" / "sites.json").read_text(encoding="utf-8"))}
+    parcels = [(shape(f["geometry"]), f["properties"]) for f in json.loads((scene / "vectors" / "county-parcels.geojson").read_text(encoding="utf-8"))["features"]]
+    for feature in sites["features"]:
+        props = feature["properties"]
+        props["era"] = eras[props["id"]]
+        point = shape(feature["geometry"]).representative_point()
+        parcel = next((p for geometry, p in parcels if geometry.contains(point)), {})
+        props["parcel_pin"] = parcel.get("PIN")
+        props["parcel_plat"] = " ".join(str(parcel[k]) for k in ("PLAT_NAME",) if parcel.get(k)) or None
+    sites_path.write_text(json.dumps(sites, separators=(",", ":")), encoding="utf-8")
+
     manifest["attribution"]["county"] = "Washington County, MN GISViewer services (roads, parcels, parks, addresses, plats); contours derived from 2012 MN DNR lidar."
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 

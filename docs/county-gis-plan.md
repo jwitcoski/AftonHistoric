@@ -107,6 +107,13 @@ Rules for every sprint:
 - The 1855 building footprints are still present-day OSM footprints; the caption says so. They need a source before the 1855 view counts as historic evidence.
 - The era change is instant. A fade, and setting the era per stop, belong to the sprint 4 tour driver.
 
+## Sprint 4 notes
+
+- The tour opens with an intro step (Today era), then the 10 stops, and returns to Today when it ends or is closed. The intro text is placeholder copy.
+- Each site has an `era` in `data/historic/sites.json`. Defaults: 1855 for stops 1, 2, 4, 5, 7, 8, 9 and 10; 1971 for stop 3 (bank, 1913) and stop 6 (blacksmith shop, c. 1910). These are my defaults and need your review.
+- The export step adds each site's county parcel ID and plat to its popup. All 10 sites matched a parcel (plat AFTON). Owner data is not included.
+- Deferred: play, pause and the audio transcript (no narration audio exists yet), and the era fade.
+
 ## Open questions
 
 1. Valley Creek site list and area, needed before its bbox and content can be defined.
